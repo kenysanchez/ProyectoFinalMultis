@@ -2,7 +2,7 @@
 
 int main() {
 
-	//Inicializacion
+	//Initialization
 	int matAColumna, matAFila, matBColumna, matBFila;
 
 	printf("Matriz A\n");
@@ -16,5 +16,6 @@ int main() {
 	scanf_s("%d", &matBColumna);
 	printf("Ingresa la cantidad de filas de la matriz: \n");
 	scanf_s("%d", &matBFila);
+
 	return 0;
 }

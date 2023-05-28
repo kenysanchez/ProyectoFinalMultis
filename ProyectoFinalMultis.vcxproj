@@ -19,7 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MatrixValidation.c" />
+    <ClCompile Include="Results.c" />
     <ClCompile Include="Source.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MatrixValidation.h" />
+    <ClInclude Include="Results.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\10mo semestre\Multiprocesadores\ProyectoFinal\matrixA1048576.txt" />
+    <Text Include="..\..\..\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\10mo semestre\Multiprocesadores\ProyectoFinal\matrixA2500.txt" />
+    <Text Include="..\..\..\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\10mo semestre\Multiprocesadores\ProyectoFinal\matrixB1048576.txt" />
+    <Text Include="..\..\..\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\10mo semestre\Multiprocesadores\ProyectoFinal\matrixB2500.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

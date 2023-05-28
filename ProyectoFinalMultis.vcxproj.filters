@@ -13,10 +13,42 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Tests">
+      <UniqueIdentifier>{576e80fb-99be-4d7f-9e7a-ff7b84206449}</UniqueIdentifier>
+      <Extensions>.txt</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MatrixValidation.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Results.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MatrixValidation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Results.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\10mo semestre\Multiprocesadores\ProyectoFinal\matrixA2500.txt">
+      <Filter>Source Files\Tests</Filter>
+    </Text>
+    <Text Include="..\..\..\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\10mo semestre\Multiprocesadores\ProyectoFinal\matrixA1048576.txt">
+      <Filter>Source Files\Tests</Filter>
+    </Text>
+    <Text Include="..\..\..\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\10mo semestre\Multiprocesadores\ProyectoFinal\matrixB2500.txt">
+      <Filter>Source Files\Tests</Filter>
+    </Text>
+    <Text Include="..\..\..\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\10mo semestre\Multiprocesadores\ProyectoFinal\matrixB1048576.txt">
+      <Filter>Source Files\Tests</Filter>
+    </Text>
   </ItemGroup>
 </Project>
