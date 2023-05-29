@@ -20,12 +20,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MatrixValidation.c" />
+    <ClCompile Include="Parallel1.c" />
+    <ClCompile Include="Parallel2.c" />
     <ClCompile Include="Results.c" />
-    <ClCompile Include="Source.c" />
+    <ClCompile Include="Serial.c" />
+    <ClCompile Include="Program.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MatrixValidation.h" />
+    <ClInclude Include="Parallel1.h" />
+    <ClInclude Include="Parallel2.h" />
     <ClInclude Include="Results.h" />
+    <ClInclude Include="Serial.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\10mo semestre\Multiprocesadores\ProyectoFinal\matrixA1048576.txt" />

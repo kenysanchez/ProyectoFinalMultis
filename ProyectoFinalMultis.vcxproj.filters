@@ -19,13 +19,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MatrixValidation.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Results.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Serial.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Parallel1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Parallel2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Program.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -36,11 +45,17 @@
     <ClInclude Include="Results.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Serial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parallel1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parallel2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\10mo semestre\Multiprocesadores\ProyectoFinal\matrixA2500.txt">
-      <Filter>Source Files\Tests</Filter>
-    </Text>
     <Text Include="..\..\..\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\10mo semestre\Multiprocesadores\ProyectoFinal\matrixA1048576.txt">
       <Filter>Source Files\Tests</Filter>
     </Text>
@@ -49,6 +64,9 @@
     </Text>
     <Text Include="..\..\..\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\10mo semestre\Multiprocesadores\ProyectoFinal\matrixB1048576.txt">
       <Filter>Source Files\Tests</Filter>
+    </Text>
+    <Text Include="..\..\..\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\10mo semestre\Multiprocesadores\ProyectoFinal\matrixA2500.txt">
+      <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>
 </Project>

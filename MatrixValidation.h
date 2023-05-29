@@ -3,9 +3,12 @@
 
 struct MatrixValidation
 {
-	bool fileRead;
-}; 
+	bool fileRead, matA, matB;
+
+} MatrixValidation; 
 
 
-void readFile(char* path[]);
-
+void readFile();
+bool canBuildMatrix(int matrixSize);
+bool matrixMultiplication(bool matA, bool matB);
+bool enoughMemorySpace(int memorySpace);
