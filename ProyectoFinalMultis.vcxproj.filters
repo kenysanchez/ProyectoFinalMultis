@@ -19,9 +19,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MatrixValidation.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Results.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -37,11 +34,14 @@
     <ClCompile Include="Program.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Validation.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MatrixValidation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Results.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -52,6 +52,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Parallel2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Validation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

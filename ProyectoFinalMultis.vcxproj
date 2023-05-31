@@ -19,7 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MatrixValidation.c" />
+    <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Validation.c" />
     <ClCompile Include="Parallel1.c" />
     <ClCompile Include="Parallel2.c" />
     <ClCompile Include="Results.c" />
@@ -27,7 +28,8 @@
     <ClCompile Include="Program.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MatrixValidation.h" />
+    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Validation.h" />
     <ClInclude Include="Parallel1.h" />
     <ClInclude Include="Parallel2.h" />
     <ClInclude Include="Results.h" />

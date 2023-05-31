@@ -1,4 +1,4 @@
-#include "MatrixValidation.h"
+#include "Validation.h"
 
 void readFile()
 {
@@ -22,7 +22,7 @@ void readFile()
             err = fclose(stream);
             if (err == 0)
             {
-                printf("The file 'crt_fopen_s.c' was closed\n");
+                printf("The file 'crt_fopen_s.c' was  closed\n");
             }
             else
             {

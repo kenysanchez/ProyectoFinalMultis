@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-struct MatrixValidation
+struct Validation
 {
 	bool fileRead, matA, matB;
 
-} MatrixValidation; 
+}; 
 
 
 void readFile();
