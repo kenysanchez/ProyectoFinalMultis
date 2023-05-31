@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include "MatrixValidation.h"
+#include "Matrix.h"
+#include "Validation.h"
 #include "Parallel1.h"
 #include "Parallel2.h"
 #include "Serial.h"
@@ -7,7 +8,8 @@
 
 
 int main() {
-	struct MatrixValidation matrixValidation;
+	struct Matrix matA, matB, matC;
+	struct Validation Validation;
 	struct Results results;
 	struct Serial serial;
 	struct Parallel1 parallel1;
@@ -15,21 +17,22 @@ int main() {
 
 
 	//Initialization
-	int matAColumna, matAFila, matBColumna, matBFila;
-
 	printf("Matriz A\n");
 	printf("Ingresa la cantidad de columnas de la matriz: \n");
-	scanf_s("%d", &matAColumna);
+	scanf_s("%d", &matA.columns);
 	printf("Ingresa la cantidad de filas de la matriz: \n");
-	scanf_s("%d", &matAFila);
+	scanf_s("%d", &matA.rows);
 
 	printf("\nMatriz B\n");
 	printf("Ingresa la cantidad de columnas de la matriz: \n");
-	scanf_s("%d", &matBColumna);
+	scanf_s("%d", &matB.columns);
 	printf("Ingresa la cantidad de filas de la matriz: \n");
-	scanf_s("%d", &matBFila);
+	scanf_s("%d", &matB.rows);
 
 	readFile();
+
+	//Validation
+
 
 	//Serial
 	//Parallel 1
