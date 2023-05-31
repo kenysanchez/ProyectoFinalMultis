@@ -29,7 +29,7 @@ int main() {
 	printf("Ingresa la cantidad de filas de la matriz: \n");
 	scanf_s("%d", &matB.rows);
 
-	readFile();
+	readFile(&matA.columns, &matA.rows);
 
 	//Validation
 
