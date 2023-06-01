@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 struct Validation
 {
@@ -7,8 +8,6 @@ struct Validation
 
 }; 
 
-
-void readFile();
-bool canBuildMatrix(int matrixSize);
-bool matrixMultiplication(bool matA, bool matB);
+bool canBuildMatrix(int matrixSize, int columns, int rows);
+bool matrixMultiplication(int matAColumns, int matARows, int matBColumns, int matBRows);
 bool enoughMemorySpace(int memorySpace);

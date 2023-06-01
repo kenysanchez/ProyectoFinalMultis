@@ -72,7 +72,7 @@
       <Filter>Source Files\Tests</Filter>
     </Text>
     <Text Include="..\..\..\OneDrive - Instituto Tecnologico y de Estudios Superiores de Monterrey\10mo semestre\Multiprocesadores\ProyectoFinal\matrixA2500.txt">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Tests</Filter>
     </Text>
   </ItemGroup>
 </Project>

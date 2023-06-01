@@ -1,48 +1,31 @@
 #include "Validation.h"
 
-void readFile()
+bool canBuildMatrix(int matrixSize, int columns, int rows)
 {
-    FILE* stream;
-    errno_t err;
-
-    err = fopen_s(&stream, "./matrixA2500.txt", "r");
-    
-    if (err == 0)
-    {
-            printf("The file 'matrixA2500.txt' was opened\n");
+    if ((matrixSize / columns) == rows) {
+        return true;
     }
-    else
-        {
-            printf("The file 'matrixA2500.txt' was not opened\n");
-        }
-
-    // Close stream if it isn't NULL
-        if (stream)
-        {
-            err = fclose(stream);
-            if (err == 0)
-            {
-                printf("The file 'crt_fopen_s.c' was  closed\n");
-            }
-            else
-            {
-                printf("The file 'crt_fopen_s.c' was not closed\n");
-            }
-        }
-        return 0;
+    else {
+        return false;
+    }
 }
 
-bool canBuildMatrix(int matrixSize)
+bool matrixMultiplication(int matAColumns, int matARows, int matBColumns, int matBRows)
 {
-    return false;
-}
-
-bool matrixMultiplication(bool matA, bool matB)
-{
-    return false;
+    if (matAColumns == matBRows) {
+        return true;
+    }
+    else {
+        return false;
+    }  
 }
 
 bool enoughMemorySpace(int memorySpace)
 {
-    return false;
+    if (memorySpace != NULL) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }

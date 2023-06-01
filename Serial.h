@@ -6,3 +6,5 @@ struct Serial
 };
 
 void runSerial();
+float multiplyMatrixes(float matA[], float matB[]);
+void createMatrixC(float matC[]);
