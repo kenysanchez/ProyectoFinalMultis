@@ -2,10 +2,9 @@
 
 bool canBuildMatrix(int matrixSize, int columns, int rows)
 {
-    if ((matrixSize / columns) == rows) {
+    if (matrixSize <= columns*rows {
         return true;
     }
-    else {
         return false;
     }
 }

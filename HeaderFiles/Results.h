@@ -1,3 +1,7 @@
+#ifndef RESULTS_DOT_H
+#define RESULTS_DOT_H
+
+
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -14,3 +18,5 @@ struct Results
 	void generateMatrixC();
 	float getAverage(int time[5]);
 	void percentageVsSerial();
+
+#endif
