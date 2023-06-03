@@ -5,10 +5,9 @@
 void transposeArray (double *entryMat, double *exitMat, int cols, int rows){
 
     double *pointerAux, *pointerExit;
-    bool exit = false;
     pointerAux = entryMat;
     pointerExit = exitMat;
-    int noIteration;
+  
 {
         
         for(int i = 0; i < cols; i++)
@@ -20,7 +19,7 @@ void transposeArray (double *entryMat, double *exitMat, int cols, int rows){
                     pointerExit += 1;
                 }
             }
-    
+    return;
 }
 
 
