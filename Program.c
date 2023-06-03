@@ -48,8 +48,12 @@ int main() {
         printf("La matriz A tiene %d elementos\n", countA);
         fseek(fileA, 0, SEEK_SET);
 
+        //Memory space validation
         float* arr = (float*)malloc(countA * sizeof(float));
-
+        if (arr == NULL) {
+            printf("Error: No hay suficiente espacio de memoria\n");
+            return 0;
+        }
 
         for (int i = 0; i < countA; i++) {
             fscanf_s(fileA, "%f", &arr[i]);
@@ -71,6 +75,11 @@ int main() {
         fseek(fileB, 0, SEEK_SET);
 
         float* arrB = (float*)malloc(countB * sizeof(float));
+        //Memory space validation
+        if (arrB == NULL) {
+            printf("Error: No hay suficiente espacio de memoria\n");
+            return 0;
+        }
 
         for (int i = 0; i < countB; i++) {
             fscanf_s(fileB, "%f", &arrB[i]);
@@ -93,17 +102,9 @@ int main() {
 
 	//Validation-----------------------------------------------------------------------------------------
     if (canBuildMatrix(countA, matA.columns, matA.rows) && canBuildMatrix(countB, matB.columns, matB.rows)){
-        printf("Validando si se pueden crear las matrices...\n");
+        printf("Si se pueden crear las matrices con esos ...\n");
         if (matrixMultiplication(matA.columns, matA.rows, matB.columns, matB.rows)) {
-            printf("Validando si se pueden multiplicar las matrices...\n");
-            //TODO: Checar validacion
-            /*if (enoughMemorySpace(memory)) {
-                printf("Validando si hay suficiente espacio de memoria...\n");
-            }
-            else {
-                printf("Error: No hay suficiente espacio de memoria\n");
-                return 0;
-            }*/
+            printf("Si se pueden multiplicar las matrices...\n");
         }
         else {
             printf("Error: No se pueden multiplicar las matrices con esos valores. Intente de nuevo\n");
@@ -117,6 +118,10 @@ int main() {
 
     //TODO: Cargar los valores hacia matrices 
     
+
+
+
+
 
 	//Serial--------------------------------------------------------------------------------------------
 

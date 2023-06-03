@@ -20,12 +20,3 @@ bool matrixMultiplication(int matAColumns, int matARows, int matBColumns, int ma
     }  
 }
 
-bool enoughMemorySpace(int memorySpace)
-{
-    if (memorySpace != NULL) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
