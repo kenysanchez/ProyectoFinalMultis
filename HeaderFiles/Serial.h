@@ -1,3 +1,6 @@
+#ifndef SERIAL_DOT_H
+#define SERIAL_DOT_H
+
 #include <stdio.h>
 
 struct Serial
@@ -6,5 +9,6 @@ struct Serial
 };
 
 void runSerial();
-float multiplyMatrixes(float matA[], float matB[]);
-void createMatrixC(float matC[]);
+void multiplyMatrixes(); //TODO: Agregar params
+
+#endif

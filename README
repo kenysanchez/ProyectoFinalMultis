@@ -1,0 +1,25 @@
+## Proyecto Final - Multiprocesadores
+
+Semestre FebJun 2023
+Linux 
+
+Multiplica 2 matrices utilizando 3 metodos diferentes 
+serial, CUDA e intrinsecas
+
+## Authors
+
+- [@DRogerSC](https://github.com/DRogerSC)
+- [@kenysanchez](https://github.com/kenysanchez)
+
+## Run
+Compile the program
+
+```bash
+  gcc -o Program Program.c
+```
+
+Run the compiled 
+
+```bash
+  ./Program
+```

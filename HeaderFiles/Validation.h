@@ -1,11 +1,8 @@
 #ifndef VALIDATION_DOT_H
 #define VALIDATION_DOT_H
 
-
-
 #include <stdio.h>
 #include <stdbool.h>
-#include <stdlib.h>
 
 struct Validation
 {

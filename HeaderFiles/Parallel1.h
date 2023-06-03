@@ -1,3 +1,5 @@
+#ifndef PARALLEL2_DOT_H
+#define PARALLEL1_DOT_H
 #include <stdio.h>
 
 struct Parallel1
@@ -6,3 +8,5 @@ struct Parallel1
 };
 
 void runParallel1();
+
+#endif

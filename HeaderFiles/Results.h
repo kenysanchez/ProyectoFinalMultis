@@ -10,13 +10,13 @@ struct Results
 	int bestMethod;
 };
 
-	void printResultsAreTheSame();
-	bool calculateIfBothResultsAreTheSame();
-	void printResultsTable();
-	int calculateBestMethod( );
-	void printBestMethod();
-	void generateMatrixC();
-	float getAverage(int time[5]);
-	void percentageVsSerial();
+void printResultsAreTheSame();
+bool calculateIfBothResultsAreTheSame();
+void printResultsTable();
+int calculateBestMethod( );
+void printBestMethod();
+void generateMatrixC();
+float getAverage(int time[5]);
+void percentageVsSerial();
 
 #endif

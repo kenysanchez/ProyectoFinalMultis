@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "validation.h": "c",
+        "serial.h": "c",
+        "stdbool.h": "c"
+    }
+}

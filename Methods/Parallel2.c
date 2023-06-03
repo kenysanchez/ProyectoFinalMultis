@@ -1,4 +1,5 @@
-#include "Parallel2.h"
+#include "../HeaderFiles/Parallel2.h"
+
 
 void runParallel2()
 {
