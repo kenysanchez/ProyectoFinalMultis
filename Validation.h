@@ -10,4 +10,3 @@ struct Validation
 
 bool canBuildMatrix(int matrixSize, int columns, int rows);
 bool matrixMultiplication(int matAColumns, int matARows, int matBColumns, int matBRows);
-bool enoughMemorySpace(int memorySpace);
