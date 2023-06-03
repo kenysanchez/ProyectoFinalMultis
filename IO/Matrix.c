@@ -7,8 +7,7 @@ void transposeArray (double *entryMat, double *exitMat, int cols, int rows){
     double *pointerAux, *pointerExit;
     pointerAux = entryMat;
     pointerExit = exitMat;
-  
-{
+
         
         for(int i = 0; i < cols; i++)
             {

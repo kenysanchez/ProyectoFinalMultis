@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "./HeaderFiles/Matrix.h"
 #include "./HeaderFiles/Validation.h"
 #include "./HeaderFiles/Parallel1.h"
@@ -36,8 +37,8 @@ int main() {
     int memory = 0;
     char cA, cB;
 
-    FILE *fileA  = fopen("./Test/matrixA2500.txt", "r");
-    FILE *fileB  = fopen("./Test/matrixB2500.txt", "r");
+    FILE *fileA  = fopen("./Test/matrixA10.txt", "r");
+    FILE *fileB  = fopen("./Test/matrixB10.txt", "r");
     
     //Get file size A
     for (cA = getc(fileA); cA != EOF; cA = getc(fileA))
@@ -52,6 +53,7 @@ int main() {
         printf("Error: No hay suficiente espacio de memoria\n");
         return 0;
     }
+    float* arrTemp = (float*)malloc(countA * sizeof(float));
 
     //Save values into array
     for (int i = 0; i < countA; i++) {
@@ -78,33 +80,42 @@ int main() {
 
     //Save values into array
     for (int i = 0; i < countB; i++) {
-        fscanf(fileB, "%f", &arrB[i]);
+        fscanf(fileB, "%f\n", &arrB[i]);
     }
         matB.fileRead = true;
 
+
+    //PRINT
+    for (int i = 0; i < 10; i++) {
+        fprintf("%f\n", &arr[i]);
+    }
+
+    transposeArray (arr, arrTemp, matA.columns, matA.rows);
+
+    for (int i = 0; i < 10; i++) {
+        fprintf("%f\n", &arrTemp[i]);
+    }
+       
+
+
 	//Validation-----------------------------------------------------------------------------------------
-    // if (Validation::canBuildMatrix(countA, matA.columns, matA.rows) && canBuildMatrix(countB, matB.columns, matB.rows)){
-    //     printf("Si se pueden crear las matrices con esos ...\n");
-    //     if (matrixMultiplication(matA.columns, matA.rows, matB.columns, matB.rows)) {
-    //         printf("Si se pueden multiplicar las matrices...\n");
-    //     }
-    //     else {
-    //         printf("Error: No se pueden multiplicar las matrices con esos valores. Intente de nuevo\n");
-    //         return 0;
-    //     }
-    // }
-    // else {
-    //     printf("Error: No se puede construir las matrices con esos valores. Intente de nuevo\n");
-    //     return 0;
-    // }
+    if (canBuildMatrix(countA, matA.columns, matA.rows) && canBuildMatrix(countB, matB.columns, matB.rows)){
+        printf("Si se pueden crear las matrices con esos ...\n");
+        if (matrixMultiplication(matA.columns, matA.rows, matB.columns, matB.rows)) {
+            printf("Si se pueden multiplicar las matrices...\n");
+        }
+        else {
+            printf("Error: No se pueden multiplicar las matrices con esos valores. Intente de nuevo\n");
+            return 0;
+        }
+    }
+    else {
+        printf("Error: No se puede construir las matrices con esos valores. Intente de nuevo\n");
+        return 0;
+    }
 
     //TODO: Cargar los valores hacia matrices 
-    
-
-
-
-
-
+ 
 	//Serial--------------------------------------------------------------------------------------------
 
 
