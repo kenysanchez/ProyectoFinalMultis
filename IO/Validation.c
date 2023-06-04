@@ -2,10 +2,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-
+                    // Cantidad de elementos en archivo
 bool canBuildMatrix(int matrixSize, int columns, int rows)
 {
-    if (matrixSize <= columns*rows) {
+    int matrixElements = columns*rows;
+    if ((matrixSize <= columns*rows)&&(matrixElements<=matrixSize)) {
         return true;
     }
     else{
