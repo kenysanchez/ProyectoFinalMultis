@@ -60,10 +60,16 @@ int main() {
 
 
     //TEMP
-    arrA[0] = 1;
     //Save values into array
-    for (int i = 0; i < countA; i++) {
-        fscanf(fileA, "%f", &arrA[i]);
+    // for (int i = 0; i < countA; i++) {
+    //     scanf(fileA, "%f", &arrA[i]);
+    //      printf("%.12f\n", arrA[i]);
+    // }
+
+    float num;
+    int n = 0;
+    while( fscanf(fileA, "%f", &num) != EOF ) {
+        arrA[n++] = num;
     }
     matA.fileRead = true;
     
