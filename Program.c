@@ -58,14 +58,7 @@ int main() {
         return 0;
     }
 
-
-    //TEMP
-    //Save values into array
-    // for (int i = 0; i < countA; i++) {
-    //     scanf(fileA, "%f", &arrA[i]);
-    //      printf("%.12f\n", arrA[i]);
-    // }
-
+    // Store values into array
     float num;
     int n = 0;
     while( fscanf(fileA, "%f", &num) != EOF ) {
@@ -73,28 +66,30 @@ int main() {
     }
     matA.fileRead = true;
     
-    // //Get file size B
-    // for (cB = getc(fileB); cB != EOF; cB = getc(fileB)){
-    //     if (cB == '\n'){
-    //         countB = countB + 1;
-    //     }
-    // }
-    // printf("La matriz B tiene %d elementos \n", countB);
-    // fseek(fileB, 0, SEEK_SET);
+    //Get file size B
+    for (cB = getc(fileB); cB != EOF; cB = getc(fileB)){
+        if (cB == '\n'){
+            countB = countB + 1;
+        }
+    }
+    printf("La matriz B tiene %d elementos \n", countB);
+    fseek(fileB, 0, SEEK_SET);
 
-    // //Memory space validation
-    // double* arrB = (double*)malloc(countB * sizeof(double));
+    //Memory space validation
+    double* arrB = (double*)malloc(countB * sizeof(double));
        
-    // if (arrB == NULL) {
-    //     printf("Error: No hay suficiente espacio de memoria\n");
-    //     return 0;
-    // }
+    if (arrB == NULL) {
+        printf("Error: No hay suficiente espacio de memoria\n");
+        return 0;
+    }
 
-    // //Save values into array
-    // for (int i = 0; i < countB; i++) {
-    //     fscanf(fileB, "%f\n", arrB[i]);
-    // }
-    //     matB.fileRead = true;
+  // Store values into array
+    float numB;
+    int m = 0;
+    while( fscanf(fileB, "%f", &numB) != EOF ) {
+        arrB[m++] = numB;
+    }
+    matA.fileRead = true;
 
 
     //PRINT
@@ -103,12 +98,12 @@ int main() {
         printf("%.12f\n", arrA[i]);
     }
 
-    // transposeArray (arr, arrTemp, matA.columns, matA.rows);
+    transposeArray (arrA, arrTemp, matA.columns, matA.rows);
 
-    // printf("AFTER MAT A\n");
-    // for (int i = 0; i < 10; i++) {
-    //     printf("%.12f\n", &arrTemp[i]);
-    // }
+    printf("AFTER MAT A\n");
+    for (int i = 0; i < 10; i++) {
+        printf("%.12f\n", &arrTemp[i]);
+    }
        
 
 

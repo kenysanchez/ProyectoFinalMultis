@@ -10,7 +10,6 @@ struct Matrix
 	bool fileRead, isValid;
 };
 
+void transposeArray (double *entryMat, double *exitMat, int cols, int rows);
+
 #endif
-
-
-
