@@ -43,7 +43,7 @@ int main() {
     for (cA = getc(fileA); cA != EOF; cA = getc(fileA))
             if (cA == '\n')
                 countA = countA + 1;
-    printf("La matriz A tiene %d elementos\n", countA);
+    printf("El archivo A tiene %d elementos\n", countA);
     fseek(fileA, 0, SEEK_SET);
 
     //Memory space validation
@@ -72,7 +72,7 @@ int main() {
             countB = countB + 1;
         }
     }
-    printf("La matriz B tiene %d elementos \n", countB);
+    printf("El archivo B tiene %d elementos \n", countB);
     fseek(fileB, 0, SEEK_SET);
 
     //Memory space validation
@@ -89,7 +89,24 @@ int main() {
     while( fscanf(fileB, "%f", &numB) != EOF ) {
         arrB[m++] = numB;
     }
-    matA.fileRead = true;
+    matB.fileRead = true;
+
+    //Validation-----------------------------------------------------------------------------------------
+    if (canBuildMatrix(countA, matA.columns, matA.rows) && canBuildMatrix(countB, matB.columns, matB.rows)){
+        printf("Si se pueden crear las matrices con esos ...\n");
+        if (matrixMultiplication(matA.columns, matA.rows, matB.columns, matB.rows)) {
+            printf("Si se pueden multiplicar las matrices...\n");
+        }
+        else {
+            printf("Error: No se pueden multiplicar las matrices con esos valores. Intente de nuevo\n");
+            return 0;
+        }
+    }
+    else {
+        printf("Error: No se pueden construir las matrices con esos valores. Intente de nuevo\n");
+        return 0;
+    }
+
 
 
     //PRINT
@@ -102,26 +119,11 @@ int main() {
 
     printf("AFTER MAT A\n");
     for (int i = 0; i < 10; i++) {
-        printf("%.12f\n", &arrTemp[i]);
+        printf("%.12f\n", arrTemp[i]);
     }
        
 
 
-	// //Validation-----------------------------------------------------------------------------------------
-    // if (canBuildMatrix(countA, matA.columns, matA.rows) && canBuildMatrix(countB, matB.columns, matB.rows)){
-    //     printf("Si se pueden crear las matrices con esos ...\n");
-    //     if (matrixMultiplication(matA.columns, matA.rows, matB.columns, matB.rows)) {
-    //         printf("Si se pueden multiplicar las matrices...\n");
-    //     }
-    //     else {
-    //         printf("Error: No se pueden multiplicar las matrices con esos valores. Intente de nuevo\n");
-    //         return 0;
-    //     }
-    // }
-    // else {
-    //     printf("Error: No se puede construir las matrices con esos valores. Intente de nuevo\n");
-    //     return 0;
-    // }
 
     //TODO: Cargar los valores hacia matrices 
  
@@ -132,6 +134,8 @@ int main() {
 
 
 	//Serial--------------------------------------------------------------------------------------------
+
+    
 
 
 
