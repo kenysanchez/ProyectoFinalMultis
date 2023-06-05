@@ -2,13 +2,18 @@
 #define SERIAL_DOT_H
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <sys/time.h>
 
 struct Serial
 {
 	float run1, run2, run3, run4, run5, average;
 };
 
-void runSerial();
-void multiplyMatrixes(); //TODO: Agregar params
+void runSerial(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, FILE *pFile);
+void multiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, FILE *pFile);
+
+//TODO: Agregar params
 
 #endif

@@ -10,7 +10,7 @@ struct Validation
 
 }; 
 
-bool canBuildMatrix(int matrixSize, int columns, int rows);
+bool canBuildMatrix(int elementsInFile, int columns, int rows);
 bool matrixMultiplication(int matAColumns, int matARows, int matBColumns, int matBRows);
 
 

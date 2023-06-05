@@ -24,7 +24,7 @@ void runSerial(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double 
 
 void multiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, FILE *pFile){
     double singleAcum;
-	
+    int initElementNoA = 0;
     //Accede cada linea de la matriz A
     for(int numRowA = 0; numRowA < rowsA; numRowA++){
         //Accede cada columna de la matriz B

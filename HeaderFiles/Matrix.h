@@ -12,4 +12,6 @@ struct Matrix
 
 void transposeArray (double *entryMat, double *exitMat, int cols, int rows);
 
+int calculateMatrixCsize(int colsA, int rowsB);
+
 #endif

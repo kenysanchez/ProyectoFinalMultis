@@ -3,10 +3,9 @@
 #include <stdbool.h>
 
                     // Cantidad de elementos en archivo
-bool canBuildMatrix(int matrixSize, int columns, int rows)
+bool canBuildMatrix(int elementsInFile, int columns, int rows)
 {
-    int matrixElements = columns*rows;
-    if ((matrixSize <= columns*rows)&&(matrixElements<=matrixSize)) {
+    if ((elementsInFile >= columns*rows)) {
         return true;
     }
     else{

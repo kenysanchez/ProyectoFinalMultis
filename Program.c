@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
+#include <time.h>
+#include <omp.h>
 #include "./HeaderFiles/Matrix.h"
 #include "./HeaderFiles/Validation.h"
 #include "./HeaderFiles/Parallel1.h"
@@ -31,13 +34,13 @@ int main() {
 	scanf("%d", &matB.rows);
 
 	//Reading files-----------------------------------------------------------------------------
-    double* matrixA, matrixB;
+    double *matrixA, *matrixB;
     int countA = 0;
     int countB = 0;
     char cA, cB;
 
-    FILE *fileA  = fopen("./Test/matrixA10.txt", "r");
-    FILE *fileB  = fopen("./Test/matrixB10.txt", "r");
+    FILE *fileA  = fopen("./Test/matrixA1048576.txt", "r");
+    FILE *fileB  = fopen("./Test/matrixB1048576.txt", "r");
     
     //Get file size A
     for (cA = getc(fileA); cA != EOF; cA = getc(fileA))
@@ -109,24 +112,67 @@ int main() {
 
 
 
-    //PRINT
-    printf("BEFORE MAT A\n");
-    for (int i = 0; i < 10; i++) {
-        printf("%.12f\n", arrA[i]);
-    }
+    // //PRINT
+    // printf("BEFORE MAT A\n");
+    // for (int i = 0; i < 10; i++) {
+    //     printf("%.12f\n", arrA[i]);
+    // }
 
     transposeArray (arrA, arrTemp, matA.columns, matA.rows);
 
-    printf("AFTER MAT A\n");
-    for (int i = 0; i < 10; i++) {
-        printf("%.12f\n", arrTemp[i]);
-    }
+    // printf("AFTER MAT A\n");
+    // for (int i = 0; i < 10; i++) {
+    //     printf("%.12f\n", arrTemp[i]);
+    // }
+
+    // //Creation of the result
+    // int matCSize = calculateMatrixCsize(matA.columns, matB.rows);
+    
+    // //Memory space validation
+    // double* arrC = (double*)malloc(matCSize * sizeof(double));
+       
+    // if (arrC == NULL) {
+    //     printf("Error: No hay suficiente espacio de memoria\n");
+    //     return 0;
+    // }
+
+
+    //Create C file
+    FILE *fileC;
+    fileC = fopen("matrixC.txt", "w");
+
+
+    //Calculate C Matrix
+    
+
+
+    // //Write to C file 
+    // for(int i = 0; i < matCSize; i++){
+    //     fprintf(fileC, "%.10f\n", arrC[i]);
+    // }
        
 
 
 
-    //TODO: Cargar los valores hacia matrices 
- 
+
+    // double singleAcum;
+    // int initElementNoA = 0;
+    // //Accede cada linea de la matriz A
+    // for(int numRowA = 0; numRowA < matA.rows; numRowA++){
+    //     //Accede cada columna de la matriz B
+    //    for(int numRowB = 0; numRowB < matB.columns; numRowB++){
+    //         singleAcum = 0;
+    //         //Accede cada elemento en la linea/columna
+    //         for(int memberNo = 0; memberNo < matA.columns; memberNo++){
+    //             int elementNoA = numRowA * matA.columns + memberNo;
+    //             int elementNoB = numRowB * matB.rows + memberNo;
+    //             singleAcum += arrA[elementNoA] * arrB[elementNoB];
+    //         }
+    //         //printf("Result of [%d, %d] is: %g \n", numRowA, numRowB, singleAcum);
+    //         fprintf(fileC, "%.10g\n", singleAcum);
+    //     }
+    // }
+    
 
 
 
@@ -135,11 +181,34 @@ int main() {
 
 	//Serial--------------------------------------------------------------------------------------------
 
-    
+
+    struct timeval now, finish; 
+    printf("Testing serial\n");
+    gettimeofday(&now, 0);
+    runSerial(matA.rows, matA.columns,  matB.rows, matB.columns, arrA, arrB, fileC);
+    gettimeofday(&finish, 0);
+    long seconds = finish.tv_sec - now.tv_sec;
+    long microseconds = finish.tv_usec - now.tv_usec;
+    double elapsed = seconds + microseconds*1e-6;
+
+    printf("Avg time measured: %.9f seconds.\n", elapsed/5);
+    printf("Finished serial\n");
+
 
 
 
 	//Parallel 1 ---------------------------------------------------------------------------------------
+
+    printf("Testing parallel with OMP\n");
+    gettimeofday(&now, 0);
+    runParallel1(matA.rows, matA.columns,  matB.rows, matB.columns, arrA, arrB, fileC);
+    gettimeofday(&finish, 0);
+    seconds = finish.tv_sec - now.tv_sec;
+    microseconds = finish.tv_usec - now.tv_usec;
+    elapsed = seconds + microseconds*1e-6;
+
+    printf("Avg time measured: %.9f seconds.\n", elapsed/5);
+    printf("Finished parallel\n");
 	
     //Parallel 2 ---------------------------------------------------------------------------------------
 
@@ -151,6 +220,7 @@ int main() {
 
     fclose(fileA);
     fclose(fileB);
+    fclose(fileC);
 
 	return 0;
 }

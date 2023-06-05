@@ -21,4 +21,8 @@ void transposeArray (double *entryMat, double *exitMat, int cols, int rows){
     return;
 }
 
+int calculateMatrixCsize(int colsA, int rowsB){
+    return colsA * rowsB;
+}
+
 
