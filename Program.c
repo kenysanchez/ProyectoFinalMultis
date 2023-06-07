@@ -50,7 +50,7 @@ int main() {
     fseek(fileA, 0, SEEK_SET);
 
     //Memory space validation
-    double* arrA = (double*)malloc(countA * sizeof(double));
+    double* arrA = (double*)alloc(countA * sizeof(double));
     if (arrA == NULL) {
         printf("Error: No hay suficiente espacio de memoria\n");
         return 0;
@@ -201,7 +201,11 @@ int main() {
 
     printf("Testing parallel with OMP\n");
     gettimeofday(&now, 0);
-    runParallel1(matA.rows, matA.columns,  matB.rows, matB.columns, arrA, arrB, fileC);
+    omp_set_num_threads(4);
+    #pragma omp parallel
+    {
+        runParallel1(matA.rows, matA.columns,  matB.rows, matB.columns, arrA, arrB, fileC);
+    }
     gettimeofday(&finish, 0);
     seconds = finish.tv_sec - now.tv_sec;
     microseconds = finish.tv_usec - now.tv_usec;
