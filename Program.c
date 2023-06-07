@@ -3,6 +3,7 @@
 #include <sys/time.h>
 #include <time.h>
 #include <omp.h>
+#include <immintrin.h>
 #include "./HeaderFiles/Matrix.h"
 #include "./HeaderFiles/Validation.h"
 #include "./HeaderFiles/Parallel1.h"
@@ -50,12 +51,12 @@ int main() {
     fseek(fileA, 0, SEEK_SET);
 
     //Memory space validation
-    double* arrA = (double*)alloc(countA * sizeof(double));
+    double* arrA = (double*) aligned_alloc(64 ,(countA * sizeof(double)));
     if (arrA == NULL) {
         printf("Error: No hay suficiente espacio de memoria\n");
         return 0;
     }
-    double* arrTemp = (double*)malloc(countA * sizeof(double));
+    double* arrTemp = (double*)aligned_alloc(64 ,(countA * sizeof(double)));
     if (arrTemp == NULL) {
         printf("Error: No hay suficiente espacio de memoria\n");
         return 0;
@@ -79,7 +80,7 @@ int main() {
     fseek(fileB, 0, SEEK_SET);
 
     //Memory space validation
-    double* arrB = (double*)malloc(countB * sizeof(double));
+    double* arrB = (double*)aligned_alloc(64 ,(countA * sizeof(double)));
        
     if (arrB == NULL) {
         printf("Error: No hay suficiente espacio de memoria\n");
