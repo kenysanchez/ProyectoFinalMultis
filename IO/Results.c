@@ -41,14 +41,14 @@ bool calculateIfBothResultsAreTheSame(const char *file1, const char *file2)
         if (char1 != char2) {
             fclose(fileSerial);
             fclose(filePar);
-            return 1;
+            return 0;
         }
     }
 
 	if (char1 == EOF && char2 == EOF) {
         fclose(fileSerial);
         fclose(filePar);
-        return 0; 
+        return 1; 
     }
 
 	fclose(fileSerial);
