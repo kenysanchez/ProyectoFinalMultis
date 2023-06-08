@@ -3,9 +3,7 @@
 #include <sys/time.h>
 #include <immintrin.h>
 
-
-void runParallel1(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, FILE *pFile, double *resultParallel1)
-
+void runParallel1(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, double * arrC)
 {
     struct timeval now, finish; 
        for (int i = 0; i < 5; i++){
@@ -19,7 +17,6 @@ void runParallel1(int rowsA, int colsA, int rowsB, int colsB, double *arrA, doub
             long microseconds = finish.tv_usec - now.tv_usec;
             double elapsed = seconds + microseconds*1e-6;
             printf("Time measured: %.9f seconds.\n", elapsed);
-            resultParallel1[i] = elapsed;
        }
   
     return;
