@@ -33,10 +33,12 @@ void multiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arrA, 
             for(int memberNo = 0; memberNo < colsA; memberNo++){
                 int elementNoA = numRowA * colsA + memberNo;
                 int elementNoB = numRowB * rowsB + memberNo;
+                //printf("Mutiplying %g and %g\n", arrA[elementNoA], arrB[elementNoB]);
                 singleAcum += arrA[elementNoA] * arrB[elementNoB];
             }
-            printf("Result of [%d, %d] is: %g \n", numRowA, numRowB, singleAcum);
+            //printf("Result of [%d, %d] is: %g \n", numRowA, numRowB, singleAcum);
             fprintf(pFile, "%.10g\n", singleAcum);
+            //printf("Sucessfully wrote to file\n");
         }
     }
     return;

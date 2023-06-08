@@ -23,16 +23,18 @@ int main() {
 
 	//Initialization----------------------------------------------------------------------------
 	printf("Matriz A\n");
+    printf("Ingresa la cantidad de filas de la matriz: \n");
+	scanf("%d", &matA.rows);
 	printf("Ingresa la cantidad de columnas de la matriz: \n");
 	scanf("%d", &matA.columns);
-	printf("Ingresa la cantidad de filas de la matriz: \n");
-	scanf("%d", &matA.rows);
+
 
 	printf("\nMatriz B\n");
+    printf("Ingresa la cantidad de filas de la matriz: \n");
+	scanf("%d", &matB.rows);
 	printf("Ingresa la cantidad de columnas de la matriz: \n");
 	scanf("%d", &matB.columns);
-	printf("Ingresa la cantidad de filas de la matriz: \n");
-	scanf("%d", &matB.rows);
+
 
 	//Reading files-----------------------------------------------------------------------------
     double *matrixA, *matrixB;
@@ -42,6 +44,11 @@ int main() {
 
     FILE *fileA  = fopen("matrizA.txt", "r");
     FILE *fileB  = fopen("matrizB.txt", "r");
+    
+    //FILE *fileA  = fopen("./Test/matrixA1048576.txt", "r");
+    //FILE *fileB  = fopen("./Test/matrixB1048576.txt", "r");
+
+    
     
     //Get file size A
     for (cA = getc(fileA); cA != EOF; cA = getc(fileA))
@@ -56,13 +63,9 @@ int main() {
         printf("Error: No hay suficiente espacio de memoria\n");
         return 0;
     }
-    double* h_arrTemp = (double*)aligned_alloc(32, countA * sizeof(double));
-    if (h_arrTemp == NULL) {
-        printf("Error: No hay suficiente espacio de memoria\n");
-        return 0;
-    }
 
-    // Store values into d_arrAy
+
+    // Store values into host arra
     float num;
     int n = 0;
     while( fscanf(fileA, "%f", &num) != EOF ) {
@@ -87,9 +90,15 @@ int main() {
         return 0;
     }
 
+    double* h_arrBTrans = (double*)aligned_alloc(32, countB * sizeof(double));
+    if (h_arrBTrans == NULL) {
+        printf("Error: No hay suficiente espacio de memoria\n");
+        return 0;
+    }
+
     
 
-  // Store values into d_arrAy
+  // Store values into host array
     float numB;
     int m = 0;
     while( fscanf(fileB, "%f", &numB) != EOF ) {
@@ -115,18 +124,20 @@ int main() {
 
 
 
-    // //PRINT
-    // printf("BEFORE MAT A\n");
-    // for (int i = 0; i < 10; i++) {
-    //     printf("%.12f\n", d_arrA[i]);
-    // }
+    //PRINT
+    printf("BEFORE MAT B\n");
+    for (int i = 0; i < 20; i++) {
+        printf("%.12f\n", h_arrB[i]);
+    }
 
-    transposeArray(h_arrA, h_arrTemp, matA.columns, matA.rows);
+    transposeArray(h_arrB, h_arrBTrans, matB.columns, matB.rows);
 
-    // printf("AFTER MAT A\n");
-    // for (int i = 0; i < 10; i++) {
-    //     printf("%.12f\n", d_arrTemp[i]);
-    // }
+    
+
+    printf("AFTER MAT B\n");
+    for (int i = 0; i < 20; i++) {
+        printf("%.12f\n", h_arrBTrans[i]);
+    }
 
     // //Creation of the result
     // int matCSize = calculateMatrixCsize(matA.columns, matB.rows);
@@ -139,7 +150,7 @@ int main() {
     //     return 0;
     // }
 
-    int countC = matA.columns * matB.rows;
+    int countC = matA.rows * matB.columns;
     double* h_arrC = (double*)aligned_alloc(32, countC * sizeof(double));
     
 
@@ -151,6 +162,9 @@ int main() {
     fileCParTwo = fopen("matrixCParTwo.txt", "w");
 
 
+    //Close first files that were read    
+    fclose(fileA);
+    fclose(fileB);
 
 
 
@@ -161,7 +175,7 @@ int main() {
     struct timeval now, finish; 
     printf("Testing serial\n");
     gettimeofday(&now, 0);
-    runSerial(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrB, fileC);
+    runSerial(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrBTrans, fileC);
     gettimeofday(&finish, 0);
     long seconds = finish.tv_sec - now.tv_sec;
     long microseconds = finish.tv_usec - now.tv_usec;
@@ -169,6 +183,9 @@ int main() {
 
     printf("Avg time measured: %.9f seconds.\n", elapsed/5);
     printf("Finished serial\n");
+
+    //Closing of FileC Serial
+    fclose(fileC);
 
 
 
@@ -178,7 +195,7 @@ int main() {
     printf("Testing parallel with OMP & avx2 vectorization\n");
     gettimeofday(&now, 0);
     omp_set_num_threads(4);
-    runParallel1(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrB, h_arrC);
+    runParallel1(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrBTrans, h_arrC);
     gettimeofday(&finish, 0);
     seconds = finish.tv_sec - now.tv_sec;
     microseconds = finish.tv_usec - now.tv_usec;
@@ -197,7 +214,7 @@ int main() {
     printf("Testing parallel with CUDA\n");
     gettimeofday(&now, 0);
 
-    runParallel2(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrB, h_arrC);
+    runParallel2(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrBTrans, h_arrC);
 
     gettimeofday(&finish, 0);
     seconds = finish.tv_sec - now.tv_sec;
@@ -218,9 +235,7 @@ int main() {
 	// printBestMethod();
 	// generateMatrixC();
 
-    fclose(fileA);
-    fclose(fileB);
-    fclose(fileC);
+
     fclose(fileCParOne);
     fclose(fileCParTwo);
 

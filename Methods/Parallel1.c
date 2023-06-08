@@ -57,15 +57,17 @@ void parMultiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arr
                 int elementNoA = numRowA * colsA + memberNo;
                 //Obtains the element number in the matrix B
                 int elementNoB = numRowB * rowsB + memberNo;
-                //Loads the next 8 double elements
+                //Loads the next 4 double elements
                 
-                //printf("Loading\n");
+                printf("Loading elementA no %d\n", elementNoA);
                 a = _mm256_load_pd(&arrA[elementNoA]);
+                printf("Loaded a\n");
+                printf("Loading elementB no %d\n", elementNoB);
                 b = _mm256_load_pd(&arrB[elementNoB]);
-                //printf("StoppedLoading\n");
-                //printf("what\n");
-                //printf("numRowA %d, numRowB %d, memberNo %d\n", numRowA, numRowB, memberNo);
-                //printf("thefuck\n");
+                printf("Loaded b\n");
+         
+                printf("numRowA %d, numRowB %d, memberNo %d\n", numRowA, numRowB, memberNo);
+               
                 int elementsRemainder = 4;
                 //This is true if it is the last loop
                 if(memberNo + 4 >= colsA){
@@ -76,9 +78,9 @@ void parMultiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arr
 
                 //Multiplies the 8 double elements and stores it in c
                 _mm256_store_pd(&resultArray[0], _mm256_mul_pd(a, b)); 
-                //printf("stored result\n");
+                 printf("stored result\n");
                 for(int x=0; x<elementsRemainder; x++){
-                    //printf("ADDING ELEMENT %d", x);
+                    printf("ADDING ELEMENT %d\n", x);
                     singleAcum += resultArray[x];
                 }
             }
