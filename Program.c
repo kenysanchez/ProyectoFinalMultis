@@ -40,8 +40,8 @@ int main() {
     int countB = 0;
     char cA, cB;
 
-    FILE *fileA  = fopen("./Test/matrixA1048576.txt", "r");
-    FILE *fileB  = fopen("./Test/matrixB1048576.txt", "r");
+    FILE *fileA  = fopen("matrizA.txt", "r");
+    FILE *fileB  = fopen("matrizB.txt", "r");
     
     //Get file size A
     for (cA = getc(fileA); cA != EOF; cA = getc(fileA))
@@ -51,22 +51,22 @@ int main() {
     fseek(fileA, 0, SEEK_SET);
 
     //Memory space validation
-    double* arrA = (double*)aligned_alloc(32, countA * sizeof(double));
-    if (arrA == NULL) {
+    double* h_arrA = (double*)aligned_alloc(32, countA * sizeof(double));
+    if (h_arrA == NULL) {
         printf("Error: No hay suficiente espacio de memoria\n");
         return 0;
     }
-    double* arrTemp = (double*)aligned_alloc(32, countA * sizeof(double));
-    if (arrTemp == NULL) {
+    double* h_arrTemp = (double*)aligned_alloc(32, countA * sizeof(double));
+    if (h_arrTemp == NULL) {
         printf("Error: No hay suficiente espacio de memoria\n");
         return 0;
     }
 
-    // Store values into array
+    // Store values into d_arrAy
     float num;
     int n = 0;
     while( fscanf(fileA, "%f", &num) != EOF ) {
-        arrA[n++] = num;
+        h_arrA[n++] = num;
     }
     matA.fileRead = true;
     
@@ -80,18 +80,20 @@ int main() {
     fseek(fileB, 0, SEEK_SET);
 
     //Memory space validation
-    double* arrB = (double*)aligned_alloc(32, countB * sizeof(double));
+    double* h_arrB = (double*)aligned_alloc(32, countB * sizeof(double));
        
-    if (arrB == NULL) {
+    if (h_arrB == NULL) {
         printf("Error: No hay suficiente espacio de memoria\n");
         return 0;
     }
 
-  // Store values into array
+    
+
+  // Store values into d_arrAy
     float numB;
     int m = 0;
     while( fscanf(fileB, "%f", &numB) != EOF ) {
-        arrB[m++] = numB;
+        h_arrB[m++] = numB;
     }
     matB.fileRead = true;
 
@@ -116,64 +118,37 @@ int main() {
     // //PRINT
     // printf("BEFORE MAT A\n");
     // for (int i = 0; i < 10; i++) {
-    //     printf("%.12f\n", arrA[i]);
+    //     printf("%.12f\n", d_arrA[i]);
     // }
 
-    transposeArray (arrA, arrTemp, matA.columns, matA.rows);
+    transposeArray(h_arrA, h_arrTemp, matA.columns, matA.rows);
 
     // printf("AFTER MAT A\n");
     // for (int i = 0; i < 10; i++) {
-    //     printf("%.12f\n", arrTemp[i]);
+    //     printf("%.12f\n", d_arrTemp[i]);
     // }
 
     // //Creation of the result
     // int matCSize = calculateMatrixCsize(matA.columns, matB.rows);
     
     // //Memory space validation
-    // double* arrC = (double*)malloc(matCSize * sizeof(double));
+    // double* d_arrC = (double*)malloc(matCSize * sizeof(double));
        
-    // if (arrC == NULL) {
+    // if (d_arrC == NULL) {
     //     printf("Error: No hay suficiente espacio de memoria\n");
     //     return 0;
     // }
 
+    int countC = matA.columns * matB.rows;
+    double* h_arrC = (double*)aligned_alloc(32, countC * sizeof(double));
+    
+
 
     //Create C file
-    FILE *fileC;
-    fileC = fopen("matrixC.txt", "w");
-
-
-    //Calculate C Matrix
-    
-
-
-    // //Write to C file 
-    // for(int i = 0; i < matCSize; i++){
-    //     fprintf(fileC, "%.10f\n", arrC[i]);
-    // }
-       
-
-
-
-
-    // double singleAcum;
-    // int initElementNoA = 0;
-    // //Accede cada linea de la matriz A
-    // for(int numRowA = 0; numRowA < matA.rows; numRowA++){
-    //     //Accede cada columna de la matriz B
-    //    for(int numRowB = 0; numRowB < matB.columns; numRowB++){
-    //         singleAcum = 0;
-    //         //Accede cada elemento en la linea/columna
-    //         for(int memberNo = 0; memberNo < matA.columns; memberNo++){
-    //             int elementNoA = numRowA * matA.columns + memberNo;
-    //             int elementNoB = numRowB * matB.rows + memberNo;
-    //             singleAcum += arrA[elementNoA] * arrB[elementNoB];
-    //         }
-    //         //printf("Result of [%d, %d] is: %g \n", numRowA, numRowB, singleAcum);
-    //         fprintf(fileC, "%.10g\n", singleAcum);
-    //     }
-    // }
-    
+    FILE *fileC, *fileCParOne, *fileCParTwo;
+    fileC = fopen("matrixCSer.txt", "w");
+    fileCParOne = fopen("matrixCParOne.txt", "w");
+    fileCParTwo = fopen("matrixCParTwo.txt", "w");
 
 
 
@@ -186,7 +161,7 @@ int main() {
     struct timeval now, finish; 
     printf("Testing serial\n");
     gettimeofday(&now, 0);
-    runSerial(matA.rows, matA.columns,  matB.rows, matB.columns, arrA, arrB, fileC);
+    runSerial(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrB, fileC);
     gettimeofday(&finish, 0);
     long seconds = finish.tv_sec - now.tv_sec;
     long microseconds = finish.tv_usec - now.tv_usec;
@@ -200,13 +175,10 @@ int main() {
 
 	//Parallel 1 ---------------------------------------------------------------------------------------
 
-    printf("Testing parallel with OMP\n");
+    printf("Testing parallel with OMP & avx2 vectorization\n");
     gettimeofday(&now, 0);
     omp_set_num_threads(4);
-    #pragma omp parallel
-    {
-        runParallel1(matA.rows, matA.columns,  matB.rows, matB.columns, arrA, arrB, fileC);
-    }
+    runParallel1(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrB, h_arrC);
     gettimeofday(&finish, 0);
     seconds = finish.tv_sec - now.tv_sec;
     microseconds = finish.tv_usec - now.tv_usec;
@@ -214,8 +186,31 @@ int main() {
 
     printf("Avg time measured: %.9f seconds.\n", elapsed/5);
     printf("Finished parallel\n");
+
+    printf("Writing result to file...\n");
+    for(int x = 0; x < matA.rows * matB.columns; x++){
+        fprintf(fileCParOne, "%.10g\n", h_arrC[x]);
+    }
 	
     //Parallel 2 ---------------------------------------------------------------------------------------
+
+    printf("Testing parallel with CUDA\n");
+    gettimeofday(&now, 0);
+
+    runParallel2(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrB, h_arrC);
+
+    gettimeofday(&finish, 0);
+    seconds = finish.tv_sec - now.tv_sec;
+    microseconds = finish.tv_usec - now.tv_usec;
+    elapsed = seconds + microseconds*1e-6;
+
+    printf("Avg time measured: %.9f seconds.\n", elapsed/5);
+    printf("Finished parallel with CUDA\n");
+
+    printf("Writing result to file...\n");
+        for(int x = 0; x < matA.rows * matB.columns; x++){
+        fprintf(fileCParTwo, "%.10g\n", h_arrC[x]);
+    }
 
 	//Results ------------------------------------------------------------------------------------------
 	// printResultsAreTheSame();
@@ -226,6 +221,8 @@ int main() {
     fclose(fileA);
     fclose(fileB);
     fclose(fileC);
+    fclose(fileCParOne);
+    fclose(fileCParTwo);
 
 	return 0;
 }

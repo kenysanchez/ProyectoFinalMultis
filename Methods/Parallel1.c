@@ -3,15 +3,14 @@
 #include <sys/time.h>
 #include <immintrin.h>
 
-void runParallel1(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, FILE *pFile)
+void runParallel1(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, double * arrC)
 {
     struct timeval now, finish; 
-    long acum; 
        for (int i = 0; i < 5; i++){
             gettimeofday(&now, 0);
-            #pragma omp parallel num_threads(4)
+            #pragma omp parallel num_threads(8)
             {
-                parMultiplyMatrixes(rowsA, colsA, rowsB, colsB ,arrA, arrB, pFile);
+                parMultiplyMatrixes(rowsA, colsA, rowsB, colsB ,arrA, arrB, arrC);
             }
             gettimeofday(&finish, 0);
             long seconds = finish.tv_sec - now.tv_sec;
@@ -25,7 +24,7 @@ void runParallel1(int rowsA, int colsA, int rowsB, int colsB, double *arrA, doub
 
 
 
-void parMultiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, FILE *pFile)
+void parMultiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, double * arrC)
 {
     int amountThreads = omp_get_num_threads();
     int noThread = omp_get_thread_num();
@@ -34,7 +33,7 @@ void parMultiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arr
     int start = noThread * interval;
     __m256d a, b;
     double *resultArray = NULL;
-    resultArray = (float*)aligned_alloc(32, sizeof(double) * 4);
+    resultArray = (double*)aligned_alloc(32, sizeof(double) * 4);
 
 
 
@@ -87,7 +86,7 @@ void parMultiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arr
             
             //TODO: Change so instead of directly writing results to file, it writes results
             //to a double pointer, then it writes to file
-            fprintf(pFile, "%.10g\n", singleAcum);
+            arrC[numRowA*rowsB+numRowB] = singleAcum;
         }
     }
     return;
