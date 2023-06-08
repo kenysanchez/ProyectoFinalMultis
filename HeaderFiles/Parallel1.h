@@ -10,7 +10,7 @@ struct Parallel1
 	float run1, run2, run3, run4, run5, average, percentageVsSerial;
 };
 
-void runParallel1(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, FILE *pFile, double *resultParallel1);
+nt rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, FILE *pFile, double *resulvoid runParallel1(itParallel1);
 void parMultiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, FILE *pFile);
 
 #endif

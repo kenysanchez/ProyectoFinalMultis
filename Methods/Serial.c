@@ -6,12 +6,13 @@
 #include <time.h>
 
 
+
 void runSerial(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, FILE *pFile, double *resultSerial){
     struct timeval now, finish; 
     long acum; 
        for (int i = 0; i < 5; i++){
             gettimeofday(&now, 0);
-            multiplyMatrixes(rowsA, colsA, rowsB, colsB ,arrA, arrB, pFile);
+            multiplyMatrixes(rowsA, colsA, rowsB, colsB, arrA, arrB, pFile);
             gettimeofday(&finish, 0);
             long seconds = finish.tv_sec - now.tv_sec;
             long microseconds = finish.tv_usec - now.tv_usec;
@@ -37,7 +38,7 @@ void multiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arrA, 
                 int elementNoB = numRowB * rowsB + memberNo;
                 singleAcum += arrA[elementNoA] * arrB[elementNoB];
             }
-            //printf("Result of [%d, %d] is: %g \n", numRowA, numRowB, singleAcum);
+            printf("Result of [%d, %d] is: %g \n", numRowA, numRowB, singleAcum);
             fprintf(pFile, "%.10g\n", singleAcum);
         }
     }

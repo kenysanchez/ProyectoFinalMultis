@@ -44,8 +44,8 @@ int main() {
     double resultParallel2[] = {1,2,3,4,5};
     double averageSerial, averageParallel1, averageParallel2;
 
-    FILE *fileA  = fopen("./Test/matrixA1048576.txt", "r");
-    FILE *fileB  = fopen("./Test/matrixB1048576.txt", "r");
+    FILE *fileA  = fopen("matrizA.txt", "r");
+    FILE *fileB  = fopen("matrizB.txt", "r");
     
     //Get file size A
     for (cA = getc(fileA); cA != EOF; cA = getc(fileA))
@@ -55,22 +55,22 @@ int main() {
     fseek(fileA, 0, SEEK_SET);
 
     //Memory space validation
-    double* arrA = (double*)aligned_alloc(32, countA * sizeof(double));
-    if (arrA == NULL) {
+    double* h_arrA = (double*)aligned_alloc(32, countA * sizeof(double));
+    if (h_arrA == NULL) {
         printf("Error: No hay suficiente espacio de memoria\n");
         return 0;
     }
-    double* arrTemp = (double*)aligned_alloc(32, countA * sizeof(double));
-    if (arrTemp == NULL) {
+    double* h_arrTemp = (double*)aligned_alloc(32, countA * sizeof(double));
+    if (h_arrTemp == NULL) {
         printf("Error: No hay suficiente espacio de memoria\n");
         return 0;
     }
 
-    // Store values into array
+    // Store values into d_arrAy
     float num;
     int n = 0;
     while( fscanf(fileA, "%f", &num) != EOF ) {
-        arrA[n++] = num;
+        h_arrA[n++] = num;
     }
     matA.fileRead = true;
     
@@ -84,18 +84,20 @@ int main() {
     fseek(fileB, 0, SEEK_SET);
 
     //Memory space validation
-    double* arrB = (double*)aligned_alloc(32, countB * sizeof(double));
+    double* h_arrB = (double*)aligned_alloc(32, countB * sizeof(double));
        
-    if (arrB == NULL) {
+    if (h_arrB == NULL) {
         printf("Error: No hay suficiente espacio de memoria\n");
         return 0;
     }
 
-  // Store values into array
+    
+
+  // Store values into d_arrAy
     float numB;
     int m = 0;
     while( fscanf(fileB, "%f", &numB) != EOF ) {
-        arrB[m++] = numB;
+        h_arrB[m++] = numB;
     }
     matB.fileRead = true;
 
@@ -116,11 +118,16 @@ int main() {
     }
 
     //Transpose Mat C
-    transposeArray (arrA, arrTemp, matA.columns, matA.rows);
+    transposeArray(h_arrA, h_arrTemp, matA.columns, matA.rows);
 
+    int countC = matA.columns * matB.rows;
+    double* h_arrC = (double*)aligned_alloc(32, countC * sizeof(double));
+    
     //Create C file
-    FILE *fileC;
-    fileC = fopen("matrixC.txt", "w");
+    FILE *fileC, *fileCParOne, *fileCParTwo;
+    fileC = fopen("matrixCSer.txt", "w");
+    fileCParOne = fopen("matrixCParOne.txt", "w");
+    fileCParTwo = fopen("matrixCParTwo.txt", "w");
 
 	//Serial--------------------------------------------------------------------------------------------
 
@@ -140,7 +147,7 @@ int main() {
 
 	//Parallel 1 ---------------------------------------------------------------------------------------
 
-    printf("Testing parallel with OMP\n");
+    printf("Testing parallel with OMP & avx2 vectorization\n");
     gettimeofday(&now, 0);
     omp_set_num_threads(4);
     #pragma omp parallel
@@ -155,11 +162,32 @@ int main() {
 
     printf("Avg time measured: %.9f seconds.\n", averageParallel1);
     printf("Finished parallel\n");
+
+    printf("Writing result to file...\n");
+    for(int x = 0; x < matA.rows * matB.columns; x++){
+        fprintf(fileCParOne, "%.10g\n", h_arrC[x]);
+    }
 	
     //Parallel 2 ---------------------------------------------------------------------------------------
+
+    printf("Testing parallel with CUDA\n");
+    gettimeofday(&now, 0);
+
+    runParallel2(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrB, h_arrC);
+
+    gettimeofday(&finish, 0);
+    seconds = finish.tv_sec - now.tv_sec;
+    microseconds = finish.tv_usec - now.tv_usec;
+    elapsed = seconds + microseconds*1e-6;
+    averageParallel2 = getAverage(resultParallel2);
   
-    //TODO: Quitar para pruebas
-    averageParallel2= 0.0;
+    printf("Avg time measured: %.9f seconds.\n", averageParallel2);
+    printf("Finished parallel with CUDA\n");
+
+    printf("Writing result to file...\n");
+        for(int x = 0; x < matA.rows * matB.columns; x++){
+        fprintf(fileCParTwo, "%.10g\n", h_arrC[x]);
+    }
 
 	//Results ------------------------------------------------------------------------------------------
 	printResultsAreTheSame();
@@ -169,6 +197,8 @@ int main() {
     fclose(fileA);
     fclose(fileB);
     fclose(fileC);
+    fclose(fileCParOne);
+    fclose(fileCParTwo);
 
 	return 0;
 }
