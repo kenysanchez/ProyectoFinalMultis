@@ -6,7 +6,7 @@
 #include <time.h>
 
 
-void runSerial(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, FILE *pFile){
+void runSerial(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, FILE *pFile, double *resultSerial){
     struct timeval now, finish;  
        for (int i = 0; i < 5; i++){
             gettimeofday(&now, 0);
@@ -16,6 +16,7 @@ void runSerial(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double 
             long microseconds = finish.tv_usec - now.tv_usec;
             double elapsed = seconds + microseconds*1e-6;
             printf("Time measured: %.9f seconds.\n", elapsed);
+            resultSerial[i] = elapsed;
        }
   
     return;

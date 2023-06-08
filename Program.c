@@ -41,6 +41,10 @@ int main() {
     int countA = 0;
     int countB = 0;
     char cA, cB;
+    double resultSerial[5];
+    double resultParallel1[5];
+    double resultParallel2[] = {1,2,3,4,5};
+    double averageSerial, averageParallel1, averageParallel2;
 
     FILE *fileA  = fopen("matrizA.txt", "r");
     FILE *fileB  = fopen("matrizB.txt", "r");
@@ -175,13 +179,14 @@ int main() {
     struct timeval now, finish; 
     printf("Testing serial\n");
     gettimeofday(&now, 0);
-    runSerial(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrBTrans, fileC);
+    runSerial(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrBTrans, fileC, resultSerial);
     gettimeofday(&finish, 0);
     long seconds = finish.tv_sec - now.tv_sec;
     long microseconds = finish.tv_usec - now.tv_usec;
     double elapsed = seconds + microseconds*1e-6;
-
-    printf("Avg time measured: %.9f seconds.\n", elapsed/5);
+    averageSerial = getAverage(resultSerial);
+    
+    printf("Avg time measured: %.9f seconds.\n", averageSerial);
     printf("Finished serial\n");
 
     //Closing of FileC Serial
@@ -195,13 +200,14 @@ int main() {
     printf("Testing parallel with OMP & avx2 vectorization\n");
     gettimeofday(&now, 0);
     omp_set_num_threads(4);
-    runParallel1(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrBTrans, h_arrC);
+    runParallel1(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrBTrans, h_arrC, resultParallel1);
     gettimeofday(&finish, 0);
     seconds = finish.tv_sec - now.tv_sec;
     microseconds = finish.tv_usec - now.tv_usec;
     elapsed = seconds + microseconds*1e-6;
+    averageParallel1 = getAverage(resultParallel1);
 
-    printf("Avg time measured: %.9f seconds.\n", elapsed/5);
+    printf("Avg time measured: %.9f seconds.\n", averageParallel1);
     printf("Finished parallel\n");
 
     printf("Writing result to file...\n");
@@ -211,30 +217,29 @@ int main() {
 	
     //Parallel 2 ---------------------------------------------------------------------------------------
 
-    printf("Testing parallel with CUDA\n");
-    gettimeofday(&now, 0);
+    // printf("Testing parallel with CUDA\n");
+    // gettimeofday(&now, 0);
 
-    runParallel2(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrBTrans, h_arrC);
+    // runParallel2(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrBTrans, h_arrC);
 
-    gettimeofday(&finish, 0);
-    seconds = finish.tv_sec - now.tv_sec;
-    microseconds = finish.tv_usec - now.tv_usec;
-    elapsed = seconds + microseconds*1e-6;
+    // gettimeofday(&finish, 0);
+    // seconds = finish.tv_sec - now.tv_sec;
+    // microseconds = finish.tv_usec - now.tv_usec;
+    // elapsed = seconds + microseconds*1e-6;
+    // averageParallel2 = getAverage(resultParallel2);
 
-    printf("Avg time measured: %.9f seconds.\n", elapsed/5);
-    printf("Finished parallel with CUDA\n");
+    // printf("Avg time measured: %.9f seconds.\n", averageParallel2);
+    // printf("Finished parallel with CUDA\n");
 
-    printf("Writing result to file...\n");
-        for(int x = 0; x < matA.rows * matB.columns; x++){
-        fprintf(fileCParTwo, "%.10g\n", h_arrC[x]);
-    }
+    // printf("Writing result to file...\n");
+    //     for(int x = 0; x < matA.rows * matB.columns; x++){
+    //     fprintf(fileCParTwo, "%.10g\n", h_arrC[x]);
+    // }
 
 	//Results ------------------------------------------------------------------------------------------
-	// printResultsAreTheSame();
-	// printResultsTable();
-	// printBestMethod();
-	// generateMatrixC();
-
+	printResultsAreTheSame();
+	printResultsTable(resultSerial, resultParallel1, resultParallel2, averageSerial, averageParallel1, averageParallel2);
+	printBestMethod(averageSerial, averageParallel1, averageParallel2);
 
     fclose(fileCParOne);
     fclose(fileCParTwo);
