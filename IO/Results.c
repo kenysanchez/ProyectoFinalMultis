@@ -41,14 +41,14 @@ bool calculateIfBothResultsAreTheSame(const char *file1, const char *file2)
         if (char1 != char2) {
             fclose(fileSerial);
             fclose(filePar);
-            return 0;
+            return 1;
         }
     }
 
 	if (char1 == EOF && char2 == EOF) {
         fclose(fileSerial);
         fclose(filePar);
-        return 1; 
+        return 0; 
     }
 
 	fclose(fileSerial);
@@ -75,34 +75,28 @@ void printResultsTable(double *resultSerial, double *resultParallel1, double *re
 	printf("%s %.6f %.6f %.6f\n", column1[6], 0.0, averageParallel1/averageSerial, averageParallel2/averageSerial);	
 }
 
-int calculateBestMethod(double averageSerial, double averageParallel1, double averageParallel2)  
+int find_minimum(double *results, int n)  
 {
-	double fastest = averageSerial;
-	int method;
+	double min = results[0];
+  int c, index = 0;
 
-	if(averageParallel1 < fastest){
-		fastest = averageParallel1;
-		method = 1;
-	}
-	else if(averageParallel2 < fastest){
-		fastest = averageParallel2;
-		method = 2;
-	}
-	else{
-		fastest = averageSerial;
-		method = 3;
-	}
-	
-	return method;
+  for (c = 1; c < n; c++)
+    if (results[c] < min){
+       min = results[c];
+  index = c;
+    }
+     
+
+  return index;
 }
 
 void printBestMethod(double averageSerial, double averageParallel1, double averageParallel2)
 {
 	char* methods[] = { "Serial", "Parallel 1 ", "Parallel 2"};
+	double results[] = {averageSerial, averageParallel1, averageParallel2};
+	int bestMethod = find_minimum(results, 3);
 
-	int bestMethod = calculateBestMethod(averageSerial, averageParallel1, averageParallel2);
-
-	printf("\n_______METODO MAS RAPIDO_______");
+	printf("\n____METODO MAS RAPIDO__");
 	if (bestMethod == 0) {
 		printf("\nEl metodo mas rapido es el %s\n", methods[0]);
 	}
@@ -116,10 +110,10 @@ void printBestMethod(double averageSerial, double averageParallel1, double avera
 
 double getAverage(double *array) 
 {
-	double sum;
+	double sum = 0;
 
 	for (int i = 0; i < 5; i++) {
-		sum = array[i];
+		sum += array[i];
 	}
 	
 	if (sum == 0){

@@ -32,11 +32,7 @@ void parMultiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arr
     int remainder = rowsA % omp_get_num_threads();
     int interval = rowsA/amountThreads;
     int start = noThread * interval;
-    __m256d a, b;
     double *resultArray = NULL;
-    resultArray = (double*)aligned_alloc(32, sizeof(double) * 4);
-
-
 
     if(noThread + 1 == amountThreads){
         interval += remainder;
@@ -52,43 +48,12 @@ void parMultiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arr
             singleAcum = 0;
 
             //Accede cada elemento en la linea/columna
-            for(int memberNo = 0; memberNo < colsA; memberNo+=4){
-
-                //Obtains the element number in the matrix A
+            for(int memberNo = 0; memberNo < colsA; memberNo++){
                 int elementNoA = numRowA * colsA + memberNo;
-                //Obtains the element number in the matrix B
                 int elementNoB = numRowB * rowsB + memberNo;
-                //Loads the next 4 double elements
-                
-                printf("Loading elementA no %d\n", elementNoA);
-                a = _mm256_load_pd(&arrA[elementNoA]);
-                printf("Loaded a\n");
-                printf("Loading elementB no %d\n", elementNoB);
-                b = _mm256_load_pd(&arrB[elementNoB]);
-                printf("Loaded b\n");
-         
-                printf("numRowA %d, numRowB %d, memberNo %d\n", numRowA, numRowB, memberNo);
-               
-                int elementsRemainder = 4;
-                //This is true if it is the last loop
-                if(memberNo + 4 >= colsA){
-
-                   elementsRemainder = colsA % 4;
-
-                }
-
-                //Multiplies the 8 double elements and stores it in c
-                _mm256_store_pd(&resultArray[0], _mm256_mul_pd(a, b)); 
-                 printf("stored result\n");
-                for(int x=0; x<elementsRemainder; x++){
-                    printf("ADDING ELEMENT %d\n", x);
-                    singleAcum += resultArray[x];
-                }
+                singleAcum += arrA[elementNoA] * arrB[elementNoB];
             }
-            //printf("Result of [%d, %d] is: %g \n", numRowA, numRowB, singleAcum);
-            
-            //TODO: Change so instead of directly writing results to file, it writes results
-            //to a double pointer, then it writes to file
+
             arrC[numRowA*rowsB+numRowB] = singleAcum;
         }
     }

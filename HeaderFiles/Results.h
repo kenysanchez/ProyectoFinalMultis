@@ -13,7 +13,7 @@ struct Results
 void printResultsAreTheSame();
 bool calculateIfBothResultsAreTheSame();
 void printResultsTable(double *resultSerial, double * resultParallel1, double * resultParallel2, double averageSerial, double averageParallel1, double averageParallel2);
-int calculateBestMethod(double averageSerial, double averageParallel1, double averageParallel2 );
+int calculateBestMethod(double *results, int n );
 void printBestMethod(double averageSerial, double averageParallel1, double averageParallel2);
 double getAverage(double *result);
 

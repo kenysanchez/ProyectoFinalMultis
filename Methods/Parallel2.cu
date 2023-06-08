@@ -4,22 +4,23 @@
 
 
 
-__global__ void parMultiplyMatrixesCuda(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, double * arrC)
+__global__ void parMultiplyMatrixesCuda(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, double *arrC)
 {
     double singleAcum;
-
+            // if (blockIdx.x == 99)
+            // printf("Hello from block %d, thread %d\n", blockIdx.x, threadIdx.x);
             for(int memberNo = 0; memberNo < colsA; memberNo++){
                 int elementNoA = blockIdx.x * colsA + memberNo;
                 int elementNoB = threadIdx.x * rowsB + memberNo;
                 singleAcum += arrA[elementNoA] * arrB[elementNoB];
             }
-            arrC[blockIdx.x*colsB + threadIdx.x] = singleAcum;
+            arrC[blockIdx.x*rowsB + threadIdx.x] = singleAcum;
     return;
 }
 
 
 
-extern "C" void runParallel2(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, double *arrC)
+extern "C" void runParallel2(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, double *arrC, double *resultParallel2)
 {   
     int blockSize = rowsA;
     int amountThreads = colsB;
@@ -52,6 +53,7 @@ extern "C" void runParallel2(int rowsA, int colsA, int rowsB, int colsB, double 
             double elapsed = seconds + microseconds*1e-6;
             printf("Time measured: %.9f seconds.\n", elapsed);
             cudaError_t error = cudaGetLastError();
+            resultParallel2[i] = elapsed;
        }
 
     cudaMemcpy(arrA, d_arrA, rowsA * colsA * sizeof(double), cudaMemcpyDeviceToHost);
@@ -63,7 +65,7 @@ extern "C" void runParallel2(int rowsA, int colsA, int rowsB, int colsB, double 
     {
         printf("Cuda error: %s\n", cudaGetErrorString(error));
     }
-  
+    
     return;
 }
 

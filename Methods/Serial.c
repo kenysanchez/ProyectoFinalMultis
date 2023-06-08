@@ -6,11 +6,11 @@
 #include <time.h>
 
 
-void runSerial(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, FILE *pFile, double *resultSerial){
+void runSerial(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, double * arrC, double *resultSerial){
     struct timeval now, finish;  
        for (int i = 0; i < 5; i++){
             gettimeofday(&now, 0);
-            multiplyMatrixes(rowsA, colsA, rowsB, colsB, arrA, arrB, pFile);
+            multiplyMatrixes(rowsA, colsA, rowsB, colsB, arrA, arrB, arrC);
             gettimeofday(&finish, 0);
             long seconds = finish.tv_sec - now.tv_sec;
             long microseconds = finish.tv_usec - now.tv_usec;
@@ -22,7 +22,7 @@ void runSerial(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double 
     return;
 }
 
-void multiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, FILE *pFile){
+void multiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arrA, double *arrB, double * arrC){
     double singleAcum;
 	
     //Accede cada linea de la matriz A
@@ -38,7 +38,7 @@ void multiplyMatrixes(int rowsA, int colsA, int rowsB, int colsB, double *arrA, 
                 singleAcum += arrA[elementNoA] * arrB[elementNoB];
             }
             //printf("Result of [%d, %d] is: %g \n", numRowA, numRowB, singleAcum);
-            fprintf(pFile, "%.10g\n", singleAcum);
+            arrC[numRowA*rowsB+numRowB] = singleAcum;
             //printf("Sucessfully wrote to file\n");
         }
     }
