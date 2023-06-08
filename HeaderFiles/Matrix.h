@@ -10,7 +10,7 @@ struct Matrix
 	bool fileRead, isValid;
 };
 
-void transposeArray (double *entryMat, double *exitMat, int cols, int rows);
+void transposeArray(double *entryMat, double *exitMat, int cols, int rows);
 
 int calculateMatrixCsize(int colsA, int rowsB);
 
