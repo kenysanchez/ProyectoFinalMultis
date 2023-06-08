@@ -39,10 +39,6 @@ int main() {
     int countA = 0;
     int countB = 0;
     char cA, cB;
-    double resultSerial[5];
-    double resultParallel1[5];
-    double resultParallel2[] = {1,2,3,4,5};
-    double averageSerial, averageParallel1, averageParallel2;
 
     FILE *fileA  = fopen("matrizA.txt", "r");
     FILE *fileB  = fopen("matrizB.txt", "r");
@@ -117,32 +113,64 @@ int main() {
         return 0;
     }
 
-    //Transpose Mat C
+
+
+    // //PRINT
+    // printf("BEFORE MAT A\n");
+    // for (int i = 0; i < 10; i++) {
+    //     printf("%.12f\n", d_arrA[i]);
+    // }
+
     transposeArray(h_arrA, h_arrTemp, matA.columns, matA.rows);
+
+    // printf("AFTER MAT A\n");
+    // for (int i = 0; i < 10; i++) {
+    //     printf("%.12f\n", d_arrTemp[i]);
+    // }
+
+    // //Creation of the result
+    // int matCSize = calculateMatrixCsize(matA.columns, matB.rows);
+    
+    // //Memory space validation
+    // double* d_arrC = (double*)malloc(matCSize * sizeof(double));
+       
+    // if (d_arrC == NULL) {
+    //     printf("Error: No hay suficiente espacio de memoria\n");
+    //     return 0;
+    // }
 
     int countC = matA.columns * matB.rows;
     double* h_arrC = (double*)aligned_alloc(32, countC * sizeof(double));
     
+
+
     //Create C file
     FILE *fileC, *fileCParOne, *fileCParTwo;
     fileC = fopen("matrixCSer.txt", "w");
     fileCParOne = fopen("matrixCParOne.txt", "w");
     fileCParTwo = fopen("matrixCParTwo.txt", "w");
 
+
+
+
+
+
 	//Serial--------------------------------------------------------------------------------------------
+
 
     struct timeval now, finish; 
     printf("Testing serial\n");
     gettimeofday(&now, 0);
-    runSerial(matA.rows, matA.columns,  matB.rows, matB.columns, arrA, arrB, fileC, resultSerial);
+    runSerial(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrB, fileC);
     gettimeofday(&finish, 0);
     long seconds = finish.tv_sec - now.tv_sec;
     long microseconds = finish.tv_usec - now.tv_usec;
     double elapsed = seconds + microseconds*1e-6;
-    averageSerial = getAverage(resultSerial);
 
-    printf("Avg time measured: %.9f seconds.\n", averageSerial);
+    printf("Avg time measured: %.9f seconds.\n", elapsed/5);
     printf("Finished serial\n");
+
+
 
 
 	//Parallel 1 ---------------------------------------------------------------------------------------
@@ -150,17 +178,13 @@ int main() {
     printf("Testing parallel with OMP & avx2 vectorization\n");
     gettimeofday(&now, 0);
     omp_set_num_threads(4);
-    #pragma omp parallel
-    {
-        runParallel1(matA.rows, matA.columns,  matB.rows, matB.columns, arrA, arrB, fileC, resultParallel1);
-    }
+    runParallel1(matA.rows, matA.columns,  matB.rows, matB.columns, h_arrA, h_arrB, h_arrC);
     gettimeofday(&finish, 0);
     seconds = finish.tv_sec - now.tv_sec;
     microseconds = finish.tv_usec - now.tv_usec;
     elapsed = seconds + microseconds*1e-6;
-    averageParallel1 = getAverage(resultParallel1);
 
-    printf("Avg time measured: %.9f seconds.\n", averageParallel1);
+    printf("Avg time measured: %.9f seconds.\n", elapsed/5);
     printf("Finished parallel\n");
 
     printf("Writing result to file...\n");
@@ -179,9 +203,8 @@ int main() {
     seconds = finish.tv_sec - now.tv_sec;
     microseconds = finish.tv_usec - now.tv_usec;
     elapsed = seconds + microseconds*1e-6;
-    averageParallel2 = getAverage(resultParallel2);
-  
-    printf("Avg time measured: %.9f seconds.\n", averageParallel2);
+
+    printf("Avg time measured: %.9f seconds.\n", elapsed/5);
     printf("Finished parallel with CUDA\n");
 
     printf("Writing result to file...\n");
@@ -190,9 +213,10 @@ int main() {
     }
 
 	//Results ------------------------------------------------------------------------------------------
-	printResultsAreTheSame();
-	printResultsTable(resultSerial, resultParallel1, resultParallel2, averageSerial, averageParallel1, averageParallel2);
-	printBestMethod(averageSerial, averageParallel1, averageParallel2);
+	// printResultsAreTheSame();
+	// printResultsTable();
+	// printBestMethod();
+	// generateMatrixC();
 
     fclose(fileA);
     fclose(fileB);

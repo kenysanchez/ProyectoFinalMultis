@@ -2,105 +2,59 @@
 
 void printResultsAreTheSame()
 {
-	const char *file1 = "matrixCSer.txt";
-    const char *file2 = "matrixCParOne.txt";
-	const char *file3 = "matrixCParTwo.txt";
-
 	printf("\n_____________RESULTADOS_____________\n");
-	if (calculateIfBothResultsAreTheSame(file1, file2)) {
-		printf("El resultado del parallel 1 es igual al serial\n");
+	if (calculateIfBothResultsAreTheSame) {
+		printf("Los resultados de los codigos paralelos son identicos al serial\n");
 	}
 	else {
-		printf("El resultado del parallel 1 NO es igual al serial\n");
-	}
-
-	if (calculateIfBothResultsAreTheSame(file1, file3)) {
-		printf("El resultado del parallel 2 es igual al serial\n");
-	}
-	else {
-		printf("El resultado del parallel 2 es igual al serial\n");
+		printf("Los resultados de los codigos paralelos NO son identicos al serial\n");
 	}
 }
 
-bool calculateIfBothResultsAreTheSame(const char *file1, const char *file2)
+bool calculateIfBothResultsAreTheSame()
 {
-	FILE *fileSerial  = fopen(file1, "r");
-	FILE *filePar  = fopen(file2, "r");
-	int char1, char2;
-
-	if (fileSerial == NULL) {
-        printf("No se pudo abrir el archivo %s\n", fileSerial);
-        return -1;
-    }
-	if (filePar == NULL) {
-        printf("No se pudo abrir el archivo %s\n", filePar);
-        return -1;
-    }
-
-	while ((char1 = fgetc(fileSerial)) != EOF && (char2 = fgetc(filePar)) != EOF) {
-        if (char1 != char2) {
-            fclose(fileSerial);
-            fclose(filePar);
-            return 0;
-        }
-    }
-
-	if (char1 == EOF && char2 == EOF) {
-        fclose(fileSerial);
-        fclose(filePar);
-        return 1; 
-    }
-
-	fclose(fileSerial);
-	fclose(filePar);
+	//TODO: Calcular si todos los resultados son iguales
+	return false;
 }
 
-void printResultsTable(double *resultSerial, double *resultParallel1, double *resultParallel2, double averageSerial, double averageParallel1, double averageParallel2)
+void printResultsTable()
 {
-	char *row1[] = { "C  ", "  S  ", "    P1  ", "    P2  " };
+	//TODO: Mejorar el aesthetic de la tabla 
+	int rows = 7;
+	int	columns = 3;
+
+	char *row1[] = { "C ", "S ", "P1 ", "P2" };
 	char *column1[] = { "1 ", "2 ", "3 ", "4 ", "5 ", "P ", "% "};
 
 	printf("\n_______TABLA DE RESULTADOS_______\n");
-	
-	for (int i = 0; i < 4; i++) {
-        printf("%s", row1[i]);
-    }
+
+	for (int k = 0; k < 4; k++) {
+		printf("%s", row1[k]);
+	}
 	printf("\n");
 
-	for (int i = 0; i < 5; i++) {
-		printf("%s %.6f %.6f %.6f", column1[i], resultSerial[i], resultParallel1[i], resultParallel2[i]);	
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < columns; j++) {
+			if (j == 0) {
+				printf("%s", column1[i]);
+			}
+			printf("X ");
+		}
 		printf("\n");
 	}
-	printf("%s %.6f %.6f %.6f\n", column1[5], averageSerial, averageParallel1, averageParallel2);	
-	printf("%s %.6f %.6f %.6f\n", column1[6], 0.0, averageParallel1/averageSerial, averageParallel2/averageSerial);	
 }
 
-int calculateBestMethod(double averageSerial, double averageParallel1, double averageParallel2)  
+int calculateBestMethod()  
 {
-	double fastest = averageSerial;
-	int method;
-
-	if(averageParallel1 < fastest){
-		fastest = averageParallel1;
-		method = 1;
-	}
-	else if(averageParallel2 < fastest){
-		fastest = averageParallel2;
-		method = 2;
-	}
-	else{
-		fastest = averageSerial;
-		method = 3;
-	}
-	
-	return method;
+	//TODO: Calcular mejor metodo
+	return 0;
 }
 
-void printBestMethod(double averageSerial, double averageParallel1, double averageParallel2)
+void printBestMethod()
 {
 	char* methods[] = { "Serial", "Parallel 1 ", "Parallel 2"};
 
-	int bestMethod = calculateBestMethod(averageSerial, averageParallel1, averageParallel2);
+	int bestMethod = calculateBestMethod();
 
 	printf("\n_______METODO MAS RAPIDO_______");
 	if (bestMethod == 0) {
@@ -114,14 +68,21 @@ void printBestMethod(double averageSerial, double averageParallel1, double avera
 	}
 }
 
-double getAverage(double *array) 
+void generateMatrixC()
 {
-	double sum;
+	//Generar archivo matriz C de resultado
+	printf("\n___GENERACION DE ARCHIVO MATRIZ C___");
+	printf("\nSe genero el archivo matrizC.txt\n\n");
+}
+
+float getAverage(int time[5]) 
+{
+	//TODO: Probar funcion
+	int sum;
 
 	for (int i = 0; i < 5; i++) {
-		sum = array[i];
+		sum = time[i];
 	}
-	
 	if (sum == 0){
 		return 0;
 	}
@@ -130,3 +91,7 @@ double getAverage(double *array)
 	}
 }
 
+void percentageVsSerial()
+{
+	//TODO:  Calcular el porcentaje
+}
